@@ -1,0 +1,2 @@
+to build this, run: qmake && make
+it depends on Qt >=4.4
