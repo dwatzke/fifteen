@@ -24,24 +24,25 @@ Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
 	int n;
 
 	for(int i = 0; i < size(); i++)
-	{ // random numbers
-		do n = rand() % size() + 1;
+	{ // random numbers from
+		do n = rand() % size() + 1; // add 1, mod returns in range (0, size()-1)
 		while(numbers.contains(n));
 		numbers << n;
 	}
 
 	n = 0;
 
+	// check for which path-row is this random placement solvable
 	for(int i = 2; i <= size(); i++)
 	for(int j = 0; j < numbers.indexOf(i); j++)
 		if(numbers[j] < i) ++n;
 
+	// generate a random even or odd row position of the initial path, depending on "n"
 	do path.setY(rand() % cube);
 	while(n%2 != path.y()%2);
 
 	path.setX(rand() % cube);
 
-	qDebug() << "N =" << n << "& e =" << path.y()+1 << ":" << numbers.size();
 	n = 0;
 
 	for(int y = 0; y < cube; ++y) // row
@@ -54,6 +55,14 @@ Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
 	}
 
 	setLayout(grid);
+}
+
+Board::~Board()
+{
+	QLayoutItem* child;
+	while((child = grid->takeAt(0)) != 0)
+		delete child;
+	delete grid;
 }
 
 void Board::moveClicked()

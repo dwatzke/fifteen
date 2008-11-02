@@ -14,6 +14,7 @@ class MainWindow : public QWidget
 	Q_OBJECT
 public:
 	MainWindow(QWidget* parent = 0);
+	~MainWindow();
 	void updateMoves();
 	void stopTimer();
 public slots:
@@ -22,6 +23,7 @@ public slots:
 private:
 	Board* board;
 	QHBoxLayout* lcdLayout;
+	QHBoxLayout* settingsLayout;
 	QVBoxLayout* layout;
 	QLCDNumber* lcdSecs;
 	QLCDNumber* lcdMoves;

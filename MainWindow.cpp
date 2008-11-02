@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget*) : board(NULL)
 	lcdLayout->addWidget(movesLabel);
 	lcdLayout->addWidget(lcdMoves, 1);
 
-	QHBoxLayout* settingsLayout = new QHBoxLayout;
+	settingsLayout = new QHBoxLayout;
 	settingsLayout->addWidget(newgame, 1);
 	//settingsLayout->addWidget(cubesize);
 
@@ -50,12 +50,25 @@ MainWindow::MainWindow(QWidget*) : board(NULL)
 	setLayout(layout);
 }
 
+MainWindow::~MainWindow()
+{
+	QLayoutItem *child;
+	while((child = lcdLayout->takeAt(0)) != 0)
+		delete child;
+	while((child = settingsLayout->takeAt(0)) != 0)
+		delete child;
+	while((child = layout->takeAt(0)) != 0)
+		delete child;
+	delete layout;
+}
+
 void MainWindow::newGame()
 {
 	if(board)
 	{
 		layout->removeWidget(board);
 		delete board;
+		stopTimer();
 	}
 
 	board = new Board(cubesize->value(), this);
@@ -63,7 +76,6 @@ void MainWindow::newGame()
 	board->hide();
 	board->show();
 
-	stopTimer();
 	seconds = -1;
 	moves = -1;
 	updateClock();
@@ -76,8 +88,7 @@ void MainWindow::newGame()
 
 void MainWindow::stopTimer()
 {
-	if(timer->isActive())
-		timer->stop();
+	timer->stop();
 }
 
 void MainWindow::updateClock()
