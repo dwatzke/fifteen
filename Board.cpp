@@ -21,28 +21,42 @@ Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
 	QTime midnight(0, 0, 0);
 	srand(midnight.secsTo(QTime::currentTime()));
 
+	bool oddBoard = (cube%2 == 1);
+
 	int n;
 
-	for(int i = 0; i < size(); i++)
-	{ // random numbers from
-		do n = rand() % size() + 1; // add 1, mod returns in range (0, size()-1)
-		while(numbers.contains(n));
-		numbers << n;
-	}
+	do
+	{
+		numbers.clear();
 
-	n = 0;
+		for(int i = 0; i < size(); i++)
+		{ // random numbers from
+			do n = rand() % size() + 1; // add 1, mod returns in range (0, size()-1)
+			while(numbers.contains(n));
+			numbers << n;
+		}
 
-	// check for which path-row is this random placement solvable
-	for(int i = 2; i <= size(); i++)
-	for(int j = 0; j < numbers.indexOf(i); j++)
-		if(numbers[j] < i) ++n;
+		n = 0;
 
-	// generate a random even or odd row position of the initial path, depending on "n"
+		// check for which path-row is this random placement solvable
+		for(int i = 2; i <= size(); i++)
+		for(int j = 0; j < numbers.indexOf(i); j++)
+		{
+			if(numbers[j] < i)
+			{
+				++n;
+			}
+		}
+	// if this is oddBoard, we need "n" to be even
+	} while(oddBoard ? n%2 == 1 : false);
+
+	/* generate a random even or odd row position of the initial path, depending on "n"
+	if this is oddBoard, just skip the checks (it doesn't matter) */
 	do path.setY(rand() % cube);
-	while(n%2 != path.y()%2);
+	while(oddBoard ? false : n%2 != path.y()%2);
 
 	path.setX(rand() % cube);
-
+	qDebug() << "N =" << n << "& e =" << path.y()+1;
 	n = 0;
 
 	for(int y = 0; y < cube; ++y) // row

@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget*) : board(NULL)
 
 	settingsLayout = new QHBoxLayout;
 	settingsLayout->addWidget(newgame, 1);
-	//settingsLayout->addWidget(cubesize);
+	settingsLayout->addWidget(cubesize);
 
 	layout = new QVBoxLayout;
 	layout->setContentsMargins(2, 2, 2, 2);
