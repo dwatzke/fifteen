@@ -12,7 +12,6 @@ class Board : public QWidget
 	Q_OBJECT
 public:
 	Board(int cb = 4, QWidget* parent = 0);
-	~Board();
 	void createButton(QPushButton*, int, int, int);
 private:
 	QList<QPushButton*> buttons;

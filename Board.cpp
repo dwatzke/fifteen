@@ -1,19 +1,17 @@
 #include "Board.h"
 #include "MainWindow.h"
 #include <QtGlobal>
-#include <QDebug>
+//#include <QDebug>
 #include <QGridLayout>
-#include <QObject>
 #include <QPoint>
 #include <QPushButton>
-#include <QString>
 #include <QTime>
 
 #include <cstdlib> // for rand()
 
-Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
+Board::Board(int cb, QWidget*) : cube(cb)
 {
-	grid = new QGridLayout;
+	grid = new QGridLayout(this);
 	grid->setHorizontalSpacing(1);
 	grid->setVerticalSpacing(1);
 	grid->setContentsMargins(2, 2, 2, 2);
@@ -56,7 +54,7 @@ Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
 	while(oddBoard ? false : n%2 != path.y()%2);
 
 	path.setX(rand() % cube);
-	qDebug() << "N =" << n << "& e =" << path.y()+1;
+
 	n = 0;
 
 	for(int y = 0; y < cube; ++y) // row
@@ -69,14 +67,6 @@ Board::Board(int cb, QWidget* parent) : QWidget(parent), cube(cb)
 	}
 
 	setLayout(grid);
-}
-
-Board::~Board()
-{
-	QLayoutItem* child;
-	while((child = grid->takeAt(0)) != 0)
-		delete child;
-	delete grid;
 }
 
 void Board::moveClicked()
@@ -133,7 +123,7 @@ void Board::createButton(QPushButton* b, int no, int x, int y)
 	QPushButton* btn = b;
 	if(!btn)
 	{
-		btn = new QPushButton(QString("%1").arg(no), this);
+		btn = new QPushButton(QString("%1").arg(no));
 		buttons << btn;
 		connect(btn, SIGNAL(clicked()), this, SLOT(moveClicked()));
 		btn->setFixedSize(50, 50);
