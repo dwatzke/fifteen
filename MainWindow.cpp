@@ -56,7 +56,7 @@ void MainWindow::newGame()
 
 	board = new Board(cubesize->value(), this);
 	layout->addWidget(board);
-	// without this old boards don't disappear
+	// without this old boards don't disappear if they have parent "this"
 	layout->update();
 	// FIXME: this is apparently needed for resize() to set the proper size
 	board->hide();
