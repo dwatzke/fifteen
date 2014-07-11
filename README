@@ -1,2 +1,3 @@
 to build this, run: qmake && make
-it depends on Qt >=4.4
+after that, you can run it with: ./fifteen
+it depends on Qt >=4.4 (and supports Qt 5.x)
